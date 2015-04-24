@@ -1,30 +1,25 @@
 Rails.application.routes.draw do
-  devise_for :users
+devise_for :users
+
   resources :conversations, only: [:index, :show, :destroy] do
-  member do
-    post :reply
+    member do
+      post :reply
+      post :restore
+      post :mark_as_read
+    end
+    collection do
+      delete :empty_trash
+    end
   end
-end
-resources :conversations, only: [:index, :show, :destroy] do
-  member do
-    post :restore
-  end
-end
-resources :conversations, only: [:index, :show, :destroy] do
-  collection do
-    delete :empty_trash
-  end
-end
-resources :conversations, only: [:index, :show, :destroy] do
-  member do
-    post :mark_as_read
-  end
-end
-  resources :messages
+  resources :messages, only: [:new, :create]
+
+  resources :users, only: [:index]
+
+  root to: 'conversations#index'
   
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
-
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
   # You can have the root of your site routed with "root"
   # root 'welcome#index'
 
