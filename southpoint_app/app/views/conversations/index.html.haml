@@ -1,3 +1,21 @@
-- page_header "Your Conversations"
-%ul.list-group= render partial: 'conversations/conversation' , collection: @conversations
-- will_paginate
+%li.list-group-item.clearfix
+  = link_to conversation.subject, conversation_path(conversation)
+  .btn-group-vertical.pull-right
+    - if conversation.is_trashed?(current_user)
+      = link_to 'Restore', restore_conversation_path(conversation), class: 'btn btn-xs btn-info', method: :post
+    - else
+      = link_to 'Move to trash', conversation_path(conversation), class: 'btn btn-xs btn-danger', method: :delete, |
+        data: {confirm: 'Are you sure?'}                                                                           |
+  %p= render 'conversations/participant', conversation: conversation
+  %p
+    = conversation.last_message.body
+    %small
+      (
+      %span.text-muted>= conversation.last_message.created_at.strftime("%-d %B %Y, %H:%M:%S")
+      )
+.col-sm-9
+  - if @box == 'trash'
+    %p= link_to 'Empty trash', empty_trash_conversations_path, class: 'btn btn-danger', method: :delete, |
+        data: {confirm: 'Are you sure?'}                                                                 |
+  %ul.list-group= render partial: 'conversations/conversation', collection: @conversations
+  = will_paginate
