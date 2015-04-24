@@ -1,0 +1,27 @@
+!!!
+%html
+  %head
+    %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
+    %title SouthpointApp
+    = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true
+    = javascript_include_tag 'application', 'data-turbolinks-track' => true
+    = csrf_meta_tags
+  %body
+    .container
+      - flash.each do | key , value |
+        %div{:class => "alert alert -#{key}"}
+          = value
+      .page-header
+        %h1 = yield :page_header 
+   %nav.navbar.navbar-inverse
+    .container
+      .navbar-header
+        = link_to 'president house' , root_path , class: 'navbar-brand'
+      %ul.nav.navbar-nav
+        - if user_signed_in?
+          %li= link_to 'Edit profile'  , edit_user_registration_path
+          %li= link_to 'Your Conversations' , conversations_path
+          %li= link_to 'Log out ' , destroy_user_session_path , method: :delete
+        - else
+          %li= link_to 'Log In' , new_user_session_path
+      = yield

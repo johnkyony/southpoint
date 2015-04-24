@@ -1,0 +1,9 @@
+- page_header "Conversation"
+.panel.panel-default
+  .panel-heading= @conversation.subject
+  .panel-body
+    .messages
+      - @conversation.receipts_for(current_user).each do |receipt|
+        - message = receipt.message
+        = message.sender.name
+        says at #{message.created_at.strftime("%-d %B %Y, %H:%M:%S")}#{message.body}
